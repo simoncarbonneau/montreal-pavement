@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Montréal Arterial Pavement Condition — 2024 Snapshot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Leaflet: the map library. Loaded from the internet, nothing to install. -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page-layout">
+    <article class="story">
+      <header>
+  <h1>Montréal Arterial Pavement Condition — 2024 Snapshot</h1>
+  <p>
+  This map shows the 2024 pavement condition of Montréal's arterial road segments.
+  It is the first part of a larger project comparing pavement condition with Montréal's truck-route network.
+</p>
+</header>
+      <section>
+        <h2>This map is for</h2>
+        <p>Montréal borough infrastructure planners and road-maintenance teams.</p>
+      </section>
+      <section>
+        <h2>What you can do here</h2>
+        <p>Use the condition filters to show or hide pavement-condition classes, then click a road segment to see its street name, borough, PCI score and condition.</p>
+      </section>
+      <section>
+        <h2>Not in this iteration</h2>
+        <p>The truck-route comparison is not included in this version because it requires a second dataset and a more complex join. For A2, I focused on getting the pavement-condition map working properly first.</p>
+      </section>
+      <section>
+  <h2>Where this comes from</h2>
+  <p>
+    <a href="https://donnees.montreal.ca/en/dataset/condition-chaussees-reseau-routier">Indicateurs de condition des chaussées du réseau routier</a>,
+    Ville de Montréal, CC BY 4.0. 2024 arterial network (RAAV).
+    Accessed September 30, 2026.
+  </p>
+</section>
+    </article>
+    <section class="map-panel" aria-label="Montreal pavement condition map">
+      <div id="map"></div>
+      <p id="status">Loading...</p>
+    </section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
