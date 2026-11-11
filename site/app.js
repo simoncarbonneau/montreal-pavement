@@ -12,6 +12,15 @@ const colours = {
   'Tr\u00e8s mauvais': '#d73027'
 };
 
+// Display labels only; keep the original condition values for data and filtering.
+const conditionLabels = {
+  Excellent: 'Excellent',
+  Bon: 'Good',
+  Moyen: 'Fair',
+  Mauvais: 'Poor',
+  'Tr\u00e8s mauvais': 'Very poor'
+};
+
 // Fixed rendering priority.
 // Worse pavement always draws above better pavement.
 const panes = {
@@ -69,14 +78,10 @@ fetch('../data/pavement_2024_a3.geojson')
         '<span style="display:inline-block;width:12px;height:12px;' +
         'background:' + colours[condition] +
         ';margin-right:6px;border:1px solid #555;"></span>' +
-        condition;
+        conditionLabels[condition];
 
       overlays[label] = conditionLayers[condition];
     });
-
-    L.control.layers(null, overlays, {
-      position: 'topright'
-    }).addTo(map);
 
     // Truck filter control.
     const TruckControl = L.Control.extend({
@@ -113,6 +118,11 @@ fetch('../data/pavement_2024_a3.geojson')
 
     map.addControl(new TruckControl());
 
+    // Leaflet stacks top-left controls in order, below the existing zoom buttons.
+    L.control.layers(null, overlays, {
+      position: 'topleft'
+    }).addTo(map);
+
     const truckFilter = document.getElementById('truck-filter');
     const truckStats = document.getElementById('truck-stats');
 
@@ -138,7 +148,7 @@ fetch('../data/pavement_2024_a3.geojson')
         '<strong>' + p.Rue + '</strong><br>' +
         'Borough: ' + p.Arrondissement + '<br>' +
         'PCI: ' + p.Indice_PCI + '<br>' +
-        'Condition: ' + p.Etat_PCI + '<br>' +
+        'Condition: ' + (conditionLabels[p.Etat_PCI] || p.Etat_PCI) + '<br>' +
         'Truck regulation: ' + p.truck_regulation
       );
     }

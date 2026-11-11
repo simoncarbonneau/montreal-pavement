@@ -15,7 +15,7 @@
   <h1>Montréal Arterial Pavement Condition — 2024 Snapshot</h1>
   <p>
   This map shows the 2024 pavement condition of Montréal's arterial road segments.
-  It is the first part of a larger project comparing pavement condition with Montréal's truck-route network.
+  For A3, the pavement dataset is joined to Montréal's truck-regulation network using shared road-segment IDs (ID_TRC).
 </p>
 </header>
       <section>
@@ -24,18 +24,22 @@
       </section>
       <section>
         <h2>What you can do here</h2>
-        <p>Use the condition filters to show or hide pavement-condition classes, then click a road segment to see its street name, borough, PCI score and condition.</p>
+        <p>Filter pavement segments by truck-regulation category. Roads stay coloured by PCI condition, and the map updates the segment count, average PCI and percentage in poor or very poor condition for the selected category. Click a road to see its street, borough, PCI score, pavement condition and truck regulation.</p>
       </section>
       <section>
-        <h2>Not in this iteration</h2>
-        <p>The truck-route comparison is not included in this version because it requires a second dataset and a more complex join. For A2, I focused on getting the pavement-condition map working properly first.</p>
+        <h2>Scope and limitations</h2>
+        <p>This is a spatial comparison of pavement condition and truck regulations, not a claim that truck traffic causes pavement damage. Historical pavement change from 2020 to 2024 is not included in this iteration and could be a future extension.</p>
       </section>
       <section>
   <h2>Where this comes from</h2>
   <p>
-    <a href="https://donnees.montreal.ca/en/dataset/condition-chaussees-reseau-routier">Indicateurs de condition des chaussées du réseau routier</a>,
-    Ville de Montréal, CC BY 4.0. 2024 arterial network (RAAV).
-    Accessed September 30, 2026.
+    Pavement: <a href="https://donnees.montreal.ca/en/dataset/condition-chaussees-reseau-routier">Indicateurs de condition des chaussées du réseau routier</a> — Ville de Montréal, CC BY 4.0.
+  </p>
+  <p>
+    Truck regulations: <a href="https://www.donneesquebec.ca/recherche/dataset/vmtl-camionnage-reglements">Règlements relatifs à la circulation des véhicules lourds et des véhicules outils sur le territoire de l'agglomération de Montréal</a> — Ville de Montréal, CC BY 4.0.
+  </p>
+  <p>
+    The A3 analysis joins the 2024 arterial pavement data with the truck-regulation line dataset using the shared road-segment ID (ID_TRC).
   </p>
 </section>
     </article>
