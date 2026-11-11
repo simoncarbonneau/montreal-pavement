@@ -143,3 +143,34 @@ I first used it to inspect the assignment requirements and decide on a feature t
 AI-generated code was not accepted without testing. I ran the commands and scripts locally, inspected their outputs, tested the map interactively, and verified the required feature tests before keeping the implementation.
 
 I also used AI assistance to help modify the JavaScript interface, including the truck-regulation filter, live statistics, popup information, and layer rendering order.
+
+## How the feature works
+
+The data join happens in `notebooks/a3_pipeline.py`.
+
+- Lines 19–63 clean up the truck regulation data so there is basically one regulation value for each road segment ID.
+- Lines 65–70 join the truck regulation data to the pavement data using `ID_TRC`.
+- Lines 72–91 keep the fields needed for the site, simplify the geometry, convert it to web coordinates, and create `pavement_2024_a3.geojson`.
+
+The main interactive feature is in `site/app.js`.
+
+- Lines 86–127 create the truck regulation filter and the live statistics area.
+- Lines 129–142 decide which road segments match the selected truck category.
+- Lines 144–154 create the popup information.
+- Lines 156–193 redraw the pavement roads whenever the truck filter changes.
+- Lines 195–241 calculate the number of segments, average PCI, and percentage in poor or very poor condition.
+- Lines 24–45 control the drawing order so roads in worse condition stay above roads in better condition.
+
+One thing I did not fully understand at first was how the two datasets would be connected. I thought I might need a spatial join, but after checking the fields I found that both datasets use the same road segment IDs. I also ran into a Pandas crash when I first tried to group duplicate truck records, so I changed that part to a simpler loop instead.
+
+## AI disclosure
+
+I used ChatGPT (GPT-5.6 Sol) and Codex inside VS Code while working on A3.
+
+I used ChatGPT mostly to help me plan the feature, inspect the datasets, write the tests before coding, and debug problems. For example, we checked how many `ID_TRC` values matched between the pavement and truck datasets before deciding how to join them.
+
+I used Codex in VS Code for some of the later code edits, mainly changing the visible page text and cleaning up the interface.
+
+The AI gave me code and suggestions, but I ran everything myself and checked the results. Some suggestions also had to be changed. For example, the first Pandas grouping method crashed on my computer, so that code was replaced with a simpler loop. I also tested all three A3 test cases on the local site before keeping the final feature.
+
+The feature idea, the project direction, the datasets I chose, the testing, and the final decisions about what stayed in the project were mine.
