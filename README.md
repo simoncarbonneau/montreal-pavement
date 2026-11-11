@@ -84,3 +84,60 @@ AI helped with the implementation, but I made the scope decisions, ran the tests
 **Action:** Display pavement segments whose ID_TRC has no matching record in the truck regulation dataset.
 
 **Expected:** The application handles these segments without errors, identifies them as having no matching truck regulation, and continues to display their pavement information normally.
+
+## A3 Feature — Truck Regulation Pavement Analysis
+
+For A3, I added a feature that combines Montréal's 2024 arterial pavement-condition data with the city's truck-regulation network using the shared `ID_TRC` road-segment identifier.
+
+The map now lets users filter pavement segments by truck-regulation class while keeping the original PCI condition colours. It also calculates live statistics for the selected group:
+
+- number of pavement segments
+- average PCI
+- percentage of segments classified as `Mauvais` or `Très mauvais`
+
+Road popups also display the matching truck regulation.
+
+Segments with no matching truck-regulation record are preserved and can be viewed separately instead of being removed from the map.
+
+### Tests written before implementation
+
+1. Selecting a truck-regulation class should show only pavement segments associated with that class, preserve PCI colours, and update the statistics.
+2. Returning to `All arterial roads` should restore all 17,176 pavement segments and the overall statistics.
+3. Selecting `No matching regulation` should display unmatched pavement segments without errors and keep their pavement information available.
+
+### Test results
+
+All three tests passed during local testing.
+
+- Class 1 correctly displayed 6,491 pavement segments and updated the statistics.
+- Returning to all arterial roads restored all 17,176 segments.
+- The no-match case correctly displayed 1,494 pavement segments without breaking the application.
+
+The pavement-condition layers were also tested in different toggle orders. Worse pavement conditions remain visually above better conditions regardless of the order in which layers are toggled.
+
+### Implementation
+
+The truck-regulation GeoJSON contains an `id_trc` field and the pavement dataset contains `ID_TRC`. These identifiers were converted to numeric IDs and used to join the truck-regulation information to the 2024 pavement segments.
+
+The processed A3 GeoJSON contains the pavement information plus:
+
+- `truck_class`
+- `truck_regulation`
+
+The web application filters these joined features in JavaScript and calculates the displayed statistics from the currently selected truck-regulation group.
+
+### One thing I did not fully understand at first
+
+I initially expected the truck and pavement datasets might require a spatial join. After inspecting the files, I found that both datasets use the same road-segment identifier, so most records could be joined directly using `ID_TRC`.
+
+I also encountered a native Python/Pandas crash while grouping duplicate truck records. I replaced the failing `groupby().apply()` operation with a simpler loop that builds the truck-class lookup by road ID.
+
+### AI use disclosure
+
+I used ChatGPT throughout the A3 process for planning, debugging, and code assistance.
+
+I first used it to inspect the assignment requirements and decide on a feature that would combine the pavement dataset with a second dataset. I then used it to help inspect dataset fields, compare road IDs, design the three tests before implementation, and troubleshoot the Python data-processing script.
+
+AI-generated code was not accepted without testing. I ran the commands and scripts locally, inspected their outputs, tested the map interactively, and verified the required feature tests before keeping the implementation.
+
+I also used AI assistance to help modify the JavaScript interface, including the truck-regulation filter, live statistics, popup information, and layer rendering order.
