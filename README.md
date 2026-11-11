@@ -67,3 +67,20 @@ Codex in VS Code (model version not shown) inspected my project files and made b
 I decided to keep A2 focused on pavement condition and leave the truck-route comparison for later. I ran the notebook and tested the changes myself. The first run failed because GeoPandas was not installed, so I installed it and reran the notebook successfully. I checked that the validation printed `All checks passed`, confirmed that 17,176 road segments loaded, tested the condition switches and clicked several road segments to check the popup information. I also corrected page wording, source information and HTML formatting after reviewing the results.
 
 AI helped with the implementation, but I made the scope decisions, ran the tests and decided what went into the final version.
+
+## A3 Feature Tests — Written Before Implementation
+
+### Test 1 — Truck regulation filter
+**Action:** Select one truck regulation class.
+
+**Expected:** Only 2024 pavement segments associated with that truck regulation class remain visible. Segments remain coloured according to pavement condition, and the displayed statistics update for the selected group.
+
+### Test 2 — Return to all arterial pavement
+**Action:** After selecting a truck regulation class, select “All arterial roads.”
+
+**Expected:** All 17,176 pavement segments are shown again and the statistics return to values for the complete 2024 arterial pavement dataset.
+
+### Test 3 — Edge case: no matching truck regulation
+**Action:** Display pavement segments whose ID_TRC has no matching record in the truck regulation dataset.
+
+**Expected:** The application handles these segments without errors, identifies them as having no matching truck regulation, and continues to display their pavement information normally.
