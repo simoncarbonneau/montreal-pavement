@@ -21,28 +21,8 @@ const conditionLabels = {
   'Tr\u00e8s mauvais': 'Very poor'
 };
 
-// Fixed rendering priority.
-// Worse pavement always draws above better pavement.
-const panes = {
-  Excellent: 'pciExcellent',
-  Bon: 'pciBon',
-  Moyen: 'pciMoyen',
-  Mauvais: 'pciMauvais',
-  'Tr\u00e8s mauvais': 'pciTresMauvais'
-};
-
-const zIndexes = {
-  Excellent: 410,
-  Bon: 420,
-  Moyen: 430,
-  Mauvais: 440,
-  'Tr\u00e8s mauvais': 450
-};
-
-Object.keys(panes).forEach(function (condition) {
-  map.createPane(panes[condition]);
-  map.getPane(panes[condition]).style.zIndex = zIndexes[condition];
-});
+// Share one canvas so every condition participates in click hit testing.
+const roadRenderer = L.canvas({ tolerance: 8 });
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -178,7 +158,7 @@ fetch('../data/pavement_2024_a3.geojson')
               color: colours[condition],
               weight: 4,
               opacity: 0.85,
-              pane: panes[condition]
+              renderer: roadRenderer
             };
           },
 
@@ -188,8 +168,20 @@ fetch('../data/pavement_2024_a3.geojson')
         }).addTo(conditionLayers[condition]);
       });
 
+      restoreRoadOrder();
       updateTruckStats();
       updateStatus();
+    }
+
+    // Colours are listed best to worst; draw worse pavement on top.
+    function restoreRoadOrder() {
+      Object.keys(colours).forEach(function (condition) {
+        if (map.hasLayer(conditionLayers[condition])) {
+          conditionLayers[condition].eachLayer(function (layer) {
+            layer.bringToFront();
+          });
+        }
+      });
     }
 
     function updateTruckStats() {
@@ -258,6 +250,7 @@ fetch('../data/pavement_2024_a3.geojson')
     truckFilter.addEventListener('change', drawSelectedRoads);
 
     map.on('overlayadd overlayremove', function () {
+      restoreRoadOrder();
       updateStatus();
     });
 
