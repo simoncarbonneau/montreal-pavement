@@ -174,3 +174,21 @@ I used Codex in VS Code for some of the later code edits, mainly changing the vi
 The AI gave me code and suggestions, but I ran everything myself and checked the results. Some suggestions also had to be changed. For example, the first Pandas grouping method crashed on my computer, so that code was replaced with a simpler loop. I also tested all three A3 test cases on the local site before keeping the final feature.
 
 The feature idea, the project direction, the datasets I chose, the testing, and the final decisions about what stayed in the project were mine.
+
+## A3 Part 3 usability test and fix
+
+The main issue I found during testing was selecting road segments. Some roads were hard to click, especially on mobile. I also discovered that on the live version only the Very poor red segments were actually clickable.
+
+I fixed the interaction so all five pavement condition classes can now be clicked. I also increased the clickable area around each road without making the visible lines thicker. The existing colour order and visual priority are still preserved.
+
+### Before
+
+Only the Very poor red segments could be selected.
+
+![Before fix](images/A3_BeforeFix_Carbonneau.png)
+
+### After
+
+All pavement condition classes can now be selected, while keeping the same visual styling.
+
+![After fix](images/A3_AfterFix_Carbonneau.png)
